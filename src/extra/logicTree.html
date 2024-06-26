@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="#" method="post" id="form">
+        <div>
+            <h3>Enter Organization Id:</h3>
+            <input type="number" id="organization_id" value="005"><br/><br/>
+        </div>
+        <div>
+            <h3>Distance: </h3>
+            <input type="number" id="InputDistance" value="12"><br/><br/>
+        </div>
+        <label>
+            <h3>Choose Item Type: </h3>
+            <input type="radio" value="perishableItems" name="item" id="perishableItems">Perishable items
+            <input type="radio" value="nonPerishableItems" name="item" id="nonPerishableItems">Non Perishable items
+        </label>
+        <label>
+            <h3>Choose Zone Type: </h3>
+            <input type="radio" value="western"  name="zone"  id="western">Western 
+            <input type="radio" value="central"  name="zone"  id="central">Central
+            <input type="radio" value="pacific"  name="zone"  id="pacific">Pacific
+            <input type="radio" value="himalyan" name="zone"  id="himalyan">Himalyan
+        </label>
+    <br/><br/>
+    <input type="button" value="Calculate" id="btn">
+    <br/>
+    <div style="display: flex;">
+        <p>Price: </p> <p id="priceBreakdown"></p>
+    </div>
+</form>
+    <script>
+        let organization_id = document.getElementById("organization_id");
+        let InputDistance = document.getElementById("InputDistance");
+        let btn = document.getElementById("btn");
+        let priceBreakdown = document.getElementById("priceBreakdown");
+        let radioButton = document.getElementsByName("item");
+        let radioButtonTwo = document.getElementsByName("zone");
+
+        let minimumDistance = 5;
+        let minimumDistanceCharges = 10;
+        let chargeablePricePerishable = 1;
+        let chargeablePriceNonPerishable = 1.5;
+        let centralZoneCharge = 0;
+
+        let handleOnClick = () => {
+            let selectedValue;
+            radioButton.forEach(radio => {
+                if (radio.checked) {
+                    selectedValue = radio.value;
+                }
+            });
+            let selectedValueTwo;
+            radioButtonTwo.forEach(radio => {
+                if (radio.checked) {
+                    selectedValueTwo = radio.value;
+                }
+            });
+            console.log(selectedValueTwo);
+            if (minimumDistance < InputDistance.value){
+                if(selectedValue =="perishableItems") {
+                    if(selectedValueTwo =="central"){
+                        let TotalDistance = InputDistance.value - minimumDistance;
+                        let TotalPrice = minimumDistanceCharges + (TotalDistance * chargeablePricePerishable) + centralZoneCharge;
+                        priceBreakdown.innerText = TotalPrice;
+                    }
+                }
+                else{
+                    let TotalDistance = InputDistance.value - minimumDistance;
+                    let TotalPrice = minimumDistanceCharges + (TotalDistance * chargeablePriceNonPerishable)  + centralZoneCharge;;
+                    priceBreakdown.innerText = (TotalPrice +" Euros");
+                }
+            }
+            else{
+                let TotalPrice = minimumDistanceCharges;
+                priceBreakdown.innerText = (TotalPrice +" Euros");
+            }
+        };
+
+        btn.onclick = handleOnClick;
+    </script>
+</body>
+</html>
